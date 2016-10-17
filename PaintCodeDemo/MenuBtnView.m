@@ -123,8 +123,6 @@
         
         [self setTitle:@"" forState:UIControlStateHighlighted];
         [self setTitle:@"" forState:UIControlStateNormal];
-
-
     }
     return self;
 
@@ -169,16 +167,15 @@
     }
     
     if (toArrow) {
-        [self upLayerToOriginal];
-        [self downLayerToOriginal];
-        self.progressValue = 0;
-        _statusType = kBtnOriginalType;
-        
-    }else{
         [self upLayerToArrow];
         [self downLayerToArrow];
         self.progressValue = 1;
         _statusType = kBtnArrowType;
+    }else{
+        [self upLayerToOriginal];
+        [self downLayerToOriginal];
+        self.progressValue = 0;
+        _statusType = kBtnOriginalType;
     }
     
 
@@ -413,6 +410,8 @@
 #pragma mark - 动态改变
 -(void)setProgressValue:(CGFloat)progressValue{
     
+    _isDrawView = YES;//更换进度的时候强制把动画状态更换为画图模式
+    _animationlayer.hidden = _isDrawView;
     
     _progressValue = progressValue;
     if (progressValue < 0 || progressValue > 1) {
@@ -421,9 +420,9 @@
         //更换当前属性
     [self changeCurrentProperty];
 
-    if (progressValue>0 && progressValue<1) {
-        _isDrawView = YES;//更换进度的时候强制把动画状态更换为画图模式
-    }
+//    if (progressValue>0 && progressValue<1) {
+//        _isDrawView = YES;//更换进度的时候强制把动画状态更换为画图模式
+//    }
 //----------------如果进度值不是初始化赋值则需要更新UI 重新绘制
     if (progressValue >= 0 && progressValue <= 1) {
         [self setNeedsDisplay];
@@ -682,6 +681,7 @@
             _animationlayer = [CALayer layer];
             _animationlayer.frame = rect;
             _animationlayer.backgroundColor = [_bgColor CGColor];
+//            _animationlayer.backgroundColor = [[UIColor orangeColor] CGColor];
             
                 //上部线
             if (!_upLayer) {

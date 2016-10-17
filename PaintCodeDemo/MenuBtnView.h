@@ -63,6 +63,7 @@ typedef NS_ENUM(NSUInteger, DrawBtnType) {
 
 /**
  是否使用 绘图方式 执行动画
+ 这个属性关乎 UIButton 是否可点击
  */
 @property (nonatomic,assign) BOOL isDrawView;//是否使用划线方式
 
