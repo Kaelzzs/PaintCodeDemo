@@ -8,10 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "DrawView.h"
-
-
-#define kDurationTime 0.4//动画执行市场
+#define kDurationTime 0.4//动画执行时长
 
 typedef NS_ENUM(NSUInteger, DrawBtnType) {
     kBtnOriginalType,
@@ -31,60 +28,10 @@ typedef NS_ENUM(NSUInteger, DrawBtnType) {
  */
 @property (nonatomic,strong) UIColor *bgColor;//背景色
 
-
 /**
  背景色图层
  */
 @property (nonatomic,strong) CALayer *bgColorLayer;
-
-#pragma mark - 通过画图方式（drawRect）完成的动画
-
-/**
- 横线原始尺寸
- */
-@property (nonatomic,assign) CGSize originalSize;
-
-/**
- 横线变成箭头时的尺寸
- */
-@property (nonatomic,assign) CGSize arrowSize;
-
-/**
- 横线原始旋转角度
- */
-@property (nonatomic,assign) CGFloat originalAngle;
-
-/**
- 箭头状态的时候 上横线的角度
- */
-@property (nonatomic,assign) CGFloat arrowUpAngle;
-
-/**
- 下横线的角度状态
- */
-@property (nonatomic,assign) CGFloat arrowDownAngle;
-
-/**
- 上箭头的原始位置
- */
-@property (nonatomic,assign) CGPoint originalUpPoint;
-
-/**
- 上横线的 箭头状态位置
- */
-@property (nonatomic,assign) CGPoint arrowUpPoint;
-
-/**
- 下横线的 原始状态 位置
- */
-@property (nonatomic,assign) CGPoint originalDownPoint;
-
-/**
- 下横线 箭头状态 位置
- */
-@property (nonatomic,assign) CGPoint arrowDownPoint;
-
-
 
 /**
  手绘动画的进度
@@ -92,37 +39,8 @@ typedef NS_ENUM(NSUInteger, DrawBtnType) {
 @property (nonatomic,assign) CGFloat progressValue;
 
 
-/**
- 当前 上横线 角度
- */
-@property (nonatomic,assign) CGFloat upAngle;
 
-/**
- 当前 下横线 角度
- */
-@property (nonatomic,assign) CGFloat downAngle;
-
-/**
- 当前 上横线 尺寸
- */
-@property (nonatomic,assign) CGSize upSize;
-
-/**
- 当前下横线尺寸
- */
-@property (nonatomic,assign) CGSize downSize;
-
-/**
- 当前 上横线 位置
- */
-@property (nonatomic,assign) CGPoint upPoint;
-
-/**
- 当前下横线位置
- */
-@property (nonatomic,assign) CGPoint downPoint;
-
-
+#pragma mark - 手绘线条
 @property (nonatomic,strong) UIBezierPath *upLine;
 
 @property (nonatomic,strong) UIBezierPath *midLine;
@@ -130,8 +48,6 @@ typedef NS_ENUM(NSUInteger, DrawBtnType) {
 @property (nonatomic,strong) UIBezierPath *downLine;
 
 @property (nonatomic,strong) CALayer *drawContentLayer;
-
-
 
 #pragma mark - 动画实现 点击效果的时候 一次性完成动画
 @property (nonatomic,strong) CAShapeLayer *upLayer;
@@ -162,13 +78,5 @@ typedef NS_ENUM(NSUInteger, DrawBtnType) {
  @param toArrow 是否是要变为箭头状态
  */
 -(void)changeToArrowView:(BOOL)toArrow;
-
-
-/**
- 进度控制动画
-
- @param progressValue 进度
- */
--(void)setProgressValue:(CGFloat)progressValue;
 
 @end

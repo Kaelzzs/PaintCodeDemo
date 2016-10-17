@@ -28,7 +28,7 @@
     hbview.center = CGPointMake(self.view.center.x, 100);
     
     [self.view addSubview:hbview];
-    [self.view setBackgroundColor:[UIColor greenColor]];
+    [self.view setBackgroundColor:[UIColor grayColor]];
     
     [hbview addTarget:self action:@selector(hamburgerAction:) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -52,8 +52,9 @@
 
 - (IBAction)menuBtnSlectedAction:(id)sender {
     
+    [_menuBtnView changeToArrowView:_drawBtn.selected];
+
     _drawBtn.selected = !_drawBtn.selected;
-    [_menuBtnView changeToArrowView:!_drawBtn.selected];
 
 }
 

@@ -8,18 +8,107 @@
 
 #import "MenuBtnView.h"
 
+
+@interface MenuBtnView(){
+    
+    
+    
+}
+
+#pragma mark - 通过画图方式（drawRect）完成的动画
+
+/**
+ 横线原始尺寸
+ */
+@property (nonatomic,assign) CGSize originalSize;
+
+/**
+ 横线变成箭头时的尺寸
+ */
+@property (nonatomic,assign) CGSize arrowSize;
+
+/**
+ 横线原始旋转角度
+ */
+@property (nonatomic,assign) CGFloat originalAngle;
+
+/**
+ 箭头状态的时候 上横线的角度
+ */
+@property (nonatomic,assign) CGFloat arrowUpAngle;
+
+/**
+ 下横线的角度状态
+ */
+@property (nonatomic,assign) CGFloat arrowDownAngle;
+
+/**
+ 上箭头的原始位置
+ */
+@property (nonatomic,assign) CGPoint originalUpPoint;
+
+/**
+ 上横线的 箭头状态位置
+ */
+@property (nonatomic,assign) CGPoint arrowUpPoint;
+
+/**
+ 下横线的 原始状态 位置
+ */
+@property (nonatomic,assign) CGPoint originalDownPoint;
+
+/**
+ 下横线 箭头状态 位置
+ */
+@property (nonatomic,assign) CGPoint arrowDownPoint;
+
+
+
+
+/**
+ 当前 上横线 角度
+ */
+@property (nonatomic,assign) CGFloat upAngle;
+
+/**
+ 当前 下横线 角度
+ */
+@property (nonatomic,assign) CGFloat downAngle;
+
+/**
+ 当前 上横线 尺寸
+ */
+@property (nonatomic,assign) CGSize upSize;
+
+/**
+ 当前下横线尺寸
+ */
+@property (nonatomic,assign) CGSize downSize;
+
+/**
+ 当前 上横线 位置
+ */
+@property (nonatomic,assign) CGPoint upPoint;
+
+/**
+ 当前下横线位置
+ */
+@property (nonatomic,assign) CGPoint downPoint;
+
+
+
+@end
+
 @implementation MenuBtnView
 
 -(instancetype)initWithCoder:(NSCoder *)aDecoder{
 
     self = [super initWithCoder:aDecoder];
     if (self) {
-        
-        _lineColor = nil;
+        _lineColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+        _bgColor = [UIColor colorWithRed: 0.059 green: 0.51 blue: 0.898 alpha: 1];
         
         _isDrawView = NO;
-        _bgColor = [DrawView kBlueColor];
-        _lineColor = [DrawView kWhiteColor];
         _statusType = kBtnOriginalType;
         
         _originalSize = CGSizeMake(32, 3);
@@ -31,9 +120,13 @@
         _originalDownPoint = CGPointMake(9, 30);
         _arrowUpPoint = CGPointMake(9.5, 20);
         _arrowDownPoint = CGPointMake(9.5, 19);
+        
+        [self setTitle:@"" forState:UIControlStateHighlighted];
+        [self setTitle:@"" forState:UIControlStateNormal];
+
+
     }
     return self;
-
 
 }
 
@@ -41,12 +134,10 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
-        
-        _lineColor = nil;
+        _lineColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+        _bgColor = [UIColor colorWithRed: 0.059 green: 0.51 blue: 0.898 alpha: 1];
         
         _isDrawView = NO;
-        _bgColor = [DrawView kBlueColor];
-        _lineColor = [DrawView kWhiteColor];
         _statusType = kBtnOriginalType;
         
         _originalSize = CGSizeMake(32, 3);
@@ -58,26 +149,36 @@
         _originalDownPoint = CGPointMake(9, 30);
         _arrowUpPoint = CGPointMake(9.5, 20);
         _arrowDownPoint = CGPointMake(9.5, 19);
+        
+        [self setTitle:@"" forState:UIControlStateHighlighted];
+        [self setTitle:@"" forState:UIControlStateNormal];
+
     }
     return self;
 }
+#pragma mark - UIBUtton点击事件
+
 
 
 #pragma mark - CAAnimation 动画改变
 -(void)changeToArrowView:(BOOL)toArrow{
     
     if (_isDrawView) {
+        [self setNeedsDisplay];
         return;
     }
     
     if (toArrow) {
         [self upLayerToOriginal];
         [self downLayerToOriginal];
+        self.progressValue = 0;
+        _statusType = kBtnOriginalType;
         
     }else{
         [self upLayerToArrow];
         [self downLayerToArrow];
-        
+        self.progressValue = 1;
+        _statusType = kBtnArrowType;
     }
     
 
@@ -312,7 +413,6 @@
 #pragma mark - 动态改变
 -(void)setProgressValue:(CGFloat)progressValue{
     
-    self.isDrawView = YES;//更换进度的时候强制把动画状态更换为画图模式
     
     _progressValue = progressValue;
     if (progressValue < 0 || progressValue > 1) {
@@ -320,13 +420,25 @@
     }
         //更换当前属性
     [self changeCurrentProperty];
-//    [self changeViewAnimationWith:progressValue];
-    
+
+    if (progressValue>0 && progressValue<1) {
+        _isDrawView = YES;//更换进度的时候强制把动画状态更换为画图模式
+    }
 //----------------如果进度值不是初始化赋值则需要更新UI 重新绘制
     if (progressValue >= 0 && progressValue <= 1) {
         [self setNeedsDisplay];
     }
     
+    if (progressValue==0) {
+        [self upLayerToOriginal];
+        [self downLayerToOriginal];
+        _statusType = kBtnOriginalType;
+    }
+    if (progressValue==1) {
+        [self upLayerToArrow];
+        [self downLayerToArrow];
+        _statusType = kBtnArrowType;
+    }
     
 }
 
@@ -465,9 +577,29 @@
 -(void)setIsDrawView:(BOOL)isDrawView{
     
     _isDrawView = isDrawView;
-    
+    //********** 这句话 真的很重要
+    self.userInteractionEnabled = !_isDrawView;
+    //**********
+
     if (isDrawView) {
         _animationlayer.hidden = YES;
+        
+        switch (_statusType) {
+            case kBtnOriginalType:
+            {
+                self.progressValue = 0;
+            }
+                break;
+            case kBtnArrowType:
+            {
+                self.progressValue = 1;
+            }
+                break;
+            default:
+                break;
+        }
+        
+        
     }else{
         _animationlayer.hidden = NO;
     }
@@ -475,9 +607,9 @@
     
 }
 
+
+    //按钮的状态 是原始状态 还是 箭头状态 动画调整
 -(void)setStatusType:(DrawBtnType)statusType{
-    
-    self.isDrawView = YES;//使用绘制按钮模式
     
     
     switch (statusType) {
@@ -520,14 +652,14 @@
     CGContextTranslateCTM(upContext, _upPoint.x, _upPoint.y);
     CGContextRotateCTM(upContext, -_upAngle * M_PI / 180);
     _upLine = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, _upSize.width, _upSize.height) cornerRadius: 1];
-    [DrawView.kWhiteColor setFill];
+    [_lineColor setFill];
     [_upLine fill];
     CGContextRestoreGState(upContext);
     
     
         //// midLine Drawing
     UIBezierPath* midLinePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(9, 20, 32, 3) cornerRadius: 1];
-    [DrawView.kWhiteColor setFill];
+    [_lineColor setFill];
     [midLinePath fill];
     
         //// downLine Drawing
@@ -536,7 +668,7 @@
     CGContextTranslateCTM(downContext, _downPoint.x, _downPoint.y);
     CGContextRotateCTM(downContext, -_downAngle * M_PI / 180);
     _downLine = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, _downSize.width, _downSize.height) cornerRadius: 1];
-    [DrawView.kWhiteColor setFill];
+    [_lineColor setFill];
     [_downLine fill];
     CGContextRestoreGState(downContext);
     
@@ -554,7 +686,7 @@
                 //上部线
             if (!_upLayer) {
                 _upLine = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, 32, 3) cornerRadius: 1];
-                [DrawView.kWhiteColor setFill];
+                [_lineColor setFill];
                 _upLine.lineWidth = 1;
                 
                 _upLayer.path = [_upLine CGPath];
@@ -598,134 +730,13 @@
             
             [self.layer addSublayer:_animationlayer];
             _animationlayer.hidden = self.isDrawView;
-            _animationlayer.backgroundColor = [[UIColor orangeColor] CGColor];
+
         }
     
     }else{
-//        _animationlayer.hidden = YES;
-//
-//            //// upLine Drawing
-//        CGContextRef upContext = UIGraphicsGetCurrentContext();
-//        CGContextSaveGState(upContext);
-//        CGContextTranslateCTM(upContext, _upPoint.x, _upPoint.y);
-//        CGContextRotateCTM(upContext, -_upAngle * M_PI / 180);
-//        _upLine = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, _upSize.width, _upSize.height) cornerRadius: 1];
-//        [DrawView.kWhiteColor setFill];
-//        [_upLine fill];
-//        CGContextRestoreGState(upContext);
-//        
-//        
-//            //// midLine Drawing
-//        UIBezierPath* midLinePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(9, 20, 32, 3) cornerRadius: 1];
-//        [DrawView.kWhiteColor setFill];
-//        [midLinePath fill];
-//        
-//            //// downLine Drawing
-//        CGContextRef downContext = UIGraphicsGetCurrentContext();
-//        CGContextSaveGState(downContext);
-//        CGContextTranslateCTM(downContext, _downPoint.x, _downPoint.y);
-//        CGContextRotateCTM(downContext, -_downAngle * M_PI / 180);
-//        _downLine = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, _downSize.width, _downSize.height) cornerRadius: 1];
-//        [DrawView.kWhiteColor setFill];
-//        [_downLine fill];
-//        CGContextRestoreGState(downContext);
 
     }
-   
 }
-        //// upLine Drawing
-   
-//    UIBezierPath *upLine = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, 32, 3) cornerRadius: 1];
-//    [DrawView.kWhiteColor setFill];
-//    
-//    _upLayer.path = [_upLine CGPath];
-//    _upLayer = [CAShapeLayer layer];
-//    _upLayer.frame = CGRectMake(_upPoint.x, _upPoint.y, _upSize.width, _upSize.height);
-//    _upLayer.transform = CATransform3DMakeRotation(-_upAngle*180 / M_PI, 0, 0, 1);
-//    _upLayer.fillColor = [[UIColor whiteColor] CGColor];
-//    _upLayer.path = upLine.CGPath;
-//    _upLayer.lineWidth = 0;
-//    _upLayer.lineCap = kCALineCapRound;
-//    
-//    
-//    
-//        //// midLine Drawing
-//    _midLine = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, 32, 3) cornerRadius: 1];
-//    [DrawView.kWhiteColor setFill];
-//    _midLayer.path = [_midLine CGPath];
-//    _midLayer = [CAShapeLayer layer];
-//    _midLayer.frame = CGRectMake(9, 20, 32, 3);
-//    _midLayer.fillColor = [[UIColor whiteColor] CGColor];
-//    _midLayer.path = _midLine.CGPath;
-//    _midLayer.lineWidth = 0;
-//    _midLayer.lineCap = kCALineCapRound;
-//    
-//        //// downLine Drawing
-//    UIBezierPath* downLinePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, 32, 3) cornerRadius: 1];
-//    downLinePath.lineWidth = 3;
-//
-//    _downLine = downLinePath;
-//    
-//    _downLayer = [CAShapeLayer layer];
-//    _downLayer.frame = CGRectMake(9, 30, 32, 3);
-//    _downLayer.fillColor = [[UIColor whiteColor] CGColor];
-//    _downLayer.path = _downLine.CGPath;
-//    _downLayer.lineWidth = 0;
-//    _downLayer.strokeStart = 0;
-//    _downLayer.strokeEnd = 1;
-//    _downLayer.lineCap = kCALineCapRound;
-//    _downLayer.strokeColor = [[UIColor redColor] CGColor];
-//    
-//
-//    
-//            //添加图层
-//
-//
-//    [_drawContentLayer addSublayer:_upLayer];
-//    [_drawContentLayer addSublayer:_midLayer];
-//    [_drawContentLayer addSublayer:_downLayer];
-//
-//    [self.layer addSublayer:_drawContentLayer];
 
-
-//    [self.layer setMask:_downLayer];
-    
-    
-
-    
-    
-    
-//        //// background Drawing
-//    UIBezierPath* backgroundPath = [UIBezierPath bezierPathWithRect: CGRectMake(0, 0, 50, 44)];
-//    [DrawView.kBlueColor setFill];
-//    [backgroundPath fill];
-//    
-//        //// upLine Drawing
-//    CGContextRef upContext = UIGraphicsGetCurrentContext();
-//    CGContextSaveGState(upContext);
-//    CGContextTranslateCTM(upContext, _upPoint.x, _upPoint.y);
-//    CGContextRotateCTM(upContext, -_upAngle * M_PI / 180);
-//    _upLine = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, _upSize.width, _upSize.height) cornerRadius: 1];
-//    [DrawView.kWhiteColor setFill];
-//    [_upLine fill];
-//    CGContextRestoreGState(upContext);
-//    
-//    
-//        //// midLine Drawing
-//    UIBezierPath* midLinePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(9, 20, 32, 3) cornerRadius: 1];
-//    [DrawView.kWhiteColor setFill];
-//    [midLinePath fill];
-//    
-//        //// downLine Drawing
-//    CGContextRef downContext = UIGraphicsGetCurrentContext();
-//    CGContextSaveGState(downContext);
-//    CGContextTranslateCTM(downContext, _downPoint.x, _downPoint.y);
-//    CGContextRotateCTM(downContext, -_downAngle * M_PI / 180);
-//    _downLine = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(0, 0, _downSize.width, _downSize.height) cornerRadius: 1];
-//    [DrawView.kWhiteColor setFill];
-//    [_downLine fill];
-//    CGContextRestoreGState(downContext);
-    
-//}
 
 @end
