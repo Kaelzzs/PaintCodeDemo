@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D66ECB6B1DB5E7390018C9F9 /* MenuBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = D66ECB6A1DB5E7390018C9F9 /* MenuBtnView.m */; };
 		D6943D791DAE4D7F006FED99 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D6943D781DAE4D7F006FED99 /* main.m */; };
 		D6943D7C1DAE4D7F006FED99 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D6943D7B1DAE4D7F006FED99 /* AppDelegate.m */; };
 		D6943D7F1DAE4D7F006FED99 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6943D7E1DAE4D7F006FED99 /* ViewController.m */; };
@@ -15,11 +16,12 @@
 		D6943D871DAE4D7F006FED99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6943D851DAE4D7F006FED99 /* LaunchScreen.storyboard */; };
 		D6943D911DAE6AFB006FED99 /* DrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6943D901DAE6AFB006FED99 /* DrawView.m */; };
 		D6943D941DAE6C40006FED99 /* TestView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6943D931DAE6C40006FED99 /* TestView.m */; };
-		D6943D971DAF2FD2006FED99 /* MenuBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6943D961DAF2FD2006FED99 /* MenuBtnView.m */; };
 		D6943D9B1DAF776E006FED99 /* HBBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6943D9A1DAF776E006FED99 /* HBBtnView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D66ECB691DB5E7390018C9F9 /* MenuBtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuBtnView.h; sourceTree = "<group>"; };
+		D66ECB6A1DB5E7390018C9F9 /* MenuBtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuBtnView.m; sourceTree = "<group>"; };
 		D6943D741DAE4D7F006FED99 /* PaintCodeDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaintCodeDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6943D781DAE4D7F006FED99 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D6943D7A1DAE4D7F006FED99 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -34,8 +36,6 @@
 		D6943D901DAE6AFB006FED99 /* DrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawView.m; sourceTree = "<group>"; };
 		D6943D921DAE6C40006FED99 /* TestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestView.h; sourceTree = "<group>"; };
 		D6943D931DAE6C40006FED99 /* TestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestView.m; sourceTree = "<group>"; };
-		D6943D951DAF2FD2006FED99 /* MenuBtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuBtnView.h; sourceTree = "<group>"; };
-		D6943D961DAF2FD2006FED99 /* MenuBtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuBtnView.m; sourceTree = "<group>"; };
 		D6943D991DAF776E006FED99 /* HBBtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBBtnView.h; sourceTree = "<group>"; };
 		D6943D9A1DAF776E006FED99 /* HBBtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBBtnView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,9 +51,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D66ECB681DB5E7390018C9F9 /* MenuBtnView */ = {
+			isa = PBXGroup;
+			children = (
+				D66ECB691DB5E7390018C9F9 /* MenuBtnView.h */,
+				D66ECB6A1DB5E7390018C9F9 /* MenuBtnView.m */,
+			);
+			path = MenuBtnView;
+			sourceTree = "<group>";
+		};
 		D6943D6B1DAE4D7F006FED99 = {
 			isa = PBXGroup;
 			children = (
+				D66ECB681DB5E7390018C9F9 /* MenuBtnView */,
 				D6943D761DAE4D7F006FED99 /* PaintCodeDemo */,
 				D6943D751DAE4D7F006FED99 /* Products */,
 			);
@@ -77,8 +87,6 @@
 				D6943D7E1DAE4D7F006FED99 /* ViewController.m */,
 				D6943D921DAE6C40006FED99 /* TestView.h */,
 				D6943D931DAE6C40006FED99 /* TestView.m */,
-				D6943D951DAF2FD2006FED99 /* MenuBtnView.h */,
-				D6943D961DAF2FD2006FED99 /* MenuBtnView.m */,
 				D6943D991DAF776E006FED99 /* HBBtnView.h */,
 				D6943D9A1DAF776E006FED99 /* HBBtnView.m */,
 				D6943D801DAE4D7F006FED99 /* Main.storyboard */,
@@ -183,7 +191,7 @@
 				D6943D7C1DAE4D7F006FED99 /* AppDelegate.m in Sources */,
 				D6943D941DAE6C40006FED99 /* TestView.m in Sources */,
 				D6943D911DAE6AFB006FED99 /* DrawView.m in Sources */,
-				D6943D971DAF2FD2006FED99 /* MenuBtnView.m in Sources */,
+				D66ECB6B1DB5E7390018C9F9 /* MenuBtnView.m in Sources */,
 				D6943D791DAE4D7F006FED99 /* main.m in Sources */,
 				D6943D9B1DAF776E006FED99 /* HBBtnView.m in Sources */,
 			);
